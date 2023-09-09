@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}iCoder-About{% endblock title %}
+{% block aboutactive %}active{% endblock aboutactive %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+            <img src="{% static './images/main.jpg' %}" class="rounded-circle" width="140" height="140" alt="developer image">
+          <h5 class="card-title">Hii I'm </h5>
+          <h5 class="card-title"><b>Saurabh Tiwari</b></h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" target="_blank" class="btn btn-primary">Download CV</a>
+          <a href="/contact" class="btn btn-primary">Contact</a>
+        </div>
+        <div class="card-footer text-body-secondary">
+        </div>
+      </div>
+    <!-- <div class="devinfo">
+        <div class="hello my-5">Hii I'm </div>
+        <div class="name my-5">Saurabh Tiwari</div>
+        <div class="about my-5">Software Engineer - Python Developer, ML Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum doloremque cum sunt veritatis iure optio incidunt cumque atque, exercitationem aliquid.</div>
+        <div class="my-5">
+            <a href="/cv.text" target="_blank"><button class="btn">Download CV</button></a>
+            <a href="/contact"><button class="btn">Contact</button></a>
+        </div>
+    </div>
+    <div class="devimg"><img src="./images/pro.png" alt="developer image"></div> -->
+</div>
+{% endblock body %}

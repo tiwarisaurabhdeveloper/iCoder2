@@ -1,0 +1,118 @@
+{% extends 'base.html' %} 
+{% block title %}iCoder-Blog-Post{% endblock title %}
+{% load static %}
+{% block body %} {% load humanize %} {% load extra %}
+<div class="container my-3">
+  <article class="blog-post">
+    <h2 class="blog-post-title mb-1">{{post.title}}</h2>
+    <p class="blog-post-meta">
+      {{post.timeStamp}} By <a href="#"> {{post.author}}</a> <span>({{post.views}} views)</span>
+    </p>
+    <p class="blog-post-meta">{{post.content|safe}}</p>
+  </article>
+</div>
+<div class="container">
+  <h2>Comments ({{comments|length}})</h2>
+
+  {% if user.is_authenticated %}
+  <form action="/blog/postComment" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="desc" class="form-label">Post Your Comments.</label>
+      <input type="text" class="form-control" name="comment" style="background-color: #f4f4f4;padding: 5px;border: 1px solid #ccc;border-radius: 10px;margin: 10px 0;" placeholder="enter comment Here" />
+      <input type="hidden" name="parentsno" value="" />
+      <input type="hidden" name="postsno" value="{{post.sno}}" />
+      <button class="btn btn-primary b4" type="submit">comment</button>
+    </div>
+  </form>
+
+  {% else %}
+  <div class="mb-3">
+    <label for="desc" class="form-label">Post Your Comments.</label>
+    <input type="text" class="form-control" name="comment" style="background-color: #f4f4f4;padding: 5px;border: 1px solid #ccc;border-radius: 10px;margin: 10px 0;" placeholder="enter comment Here" />
+    <input type="hidden" name="postsno" value="{{post.sno}}" />
+    <button class="btn btn-primary b4" data-bs-toggle="modal" data-bs-target="#modelsignup" type="submit">
+      comment
+    </button>
+  </div>
+  {% endif %}
+
+  {% for comment in comments %}
+    <div class="row my-3" style="background-color: #f4f4f4; padding: 5px;border: 1px solid #ccc; border-radius: 10px;margin: 10px 0;">
+      <div class="col-md-1" style="text-align: center">
+        <img src="{% static '/images/profile.jpg' %}" alt="mdo" width="24" height="24"
+          class="border border-black rounded-circle" />
+      </div>
+      <div class="col-md-11">
+        <b>
+          {{comment.user.username}}
+          <span class="badge text-bg-light" style="font-size: xx-small">
+            {{comment.timeStamp|naturaltime}}
+          </span>
+        </b>
+        <div>{{comment.comment}}</div>
+
+        <div class="reply mx-0">
+          <button class="btn badge bg-secondary" type="button" data-bs-toggle="collapse"
+            data-bs-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}}">
+            Reply
+          </button>
+          <div class="collapse" id="replyBox{{comment.sno}}">
+            <div class="card card-body my-2">
+
+              {% if user.is_authenticated %}
+              <form action="/blog/postComment" method="post">
+                {% csrf_token %}
+                <div class="mb-1">
+                  <input type="text" class="form-control" name="comment" style="
+                      background-color: #f4f4f4;
+                      padding: 5px;
+                      border: 1px solid #ccc;
+                      border-radius: 10px;
+                      margin: 10px 0;
+                    " placeholder="Reply Here" />
+                  <input type="hidden" name="parentsno" value="{{comment.sno}}" />
+                  <input type="hidden" name="postsno" value="{{post.sno}}" />
+                  <button class="btn btn-sm btn-primary" type="submit">
+                    Reply
+                  </button>
+                </div>
+              </form>
+
+              {% else %}
+                <div class="mb-1">
+                  <input type="text" class="form-control" name="comment" style="background-color: #f4f4f4;padding: 5px;border: 1px solid #ccc;border-radius: 10px;margin: 10px 0;" placeholder="Reply Here" />
+                  <input type="hidden" name="parentsno" value="{{comment.sno}}" />
+                  <input type="hidden" name="postsno" value="{{post.sno}}" />
+                  <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modelsignup"  type="submit">
+                    Reply
+                  </button>
+                </div>
+
+              {% endif %}
+
+            </div>
+          </div>
+          <div class="replies my-1">
+
+            {% for reply in repDict|get_val:comment.sno %}
+              <div class="row my-1" style="background-color: #f4f4f4; padding: 5px;border: 1px solid #ccc; border-radius: 10px;margin: 10px 0;">
+                <div class="col-md-1" style="text-align: center">
+                  <img src="{% static '/images/profile.jpg' %}" alt="mdo" width="24" height="24"
+                    class="border border-black rounded-circle" />
+                </div>
+                <div class="col-md-11">
+                  <b>{{reply.user.username}}<span class="badge text-bg-light" style="font-size: xx-small">{{reply.timeStamp|naturaltime}}</span></b>
+                  <div>{{reply.comment}}</div>
+                </div>
+                <br />
+              </div>
+
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

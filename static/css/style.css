@@ -1,0 +1,43 @@
+
+body {
+  font-family: 'proxima-nova', sans-serif;
+}
+.indexc{
+  background-image: url("../images/imghome.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+  background-color: #1b1b1b;
+  
+}
+.indexb{
+  background-image: url("../images/blogbg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+  background-color: #1b1b1b;
+  
+}
+
+
+.custom-card-height {
+  /* height: 300px; Adjust the height as needed */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+.com-inp {
+  background-color: #f4f4f4;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+
+
+/* footer style  */

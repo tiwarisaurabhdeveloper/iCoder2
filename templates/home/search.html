@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}iCoder-Search-Portal{% endblock title %}
+{% block blogactive %}active{% endblock blogactive %}
+{% block body %}
+{% load static %}
+{% block js %}
+<script>
+let previews=document.getElementsByClassName('preview')
+Array.from(previews).forEach((ele)=>{
+    ele.innerHTML=ele.innerText;
+})
+</script>
+{% endblock js %}
+<div class="container">
+    <h2>Searching Result's</h2>
+    <hr />
+    {% if allPosts|length < 1 %}
+  <p aria-level="3" role="heading" style="padding-top: 0.33em">
+    Your search -
+    <span
+      ><em><b>{{query}}</b></em></span
+    >
+    - did not match any documents.
+  </p>
+  <p style="margin-top: 1em">Suggestions:</p>
+  <ul style="margin-left: 1.3em; margin-bottom: 2em">
+    <li>Make sure that all words are spelled correctly.</li>
+    <li>Try different keywords.</li>
+    <li>Try more general keywords.</li>
+  </ul>
+  {% endif %}    {% for post in allPosts %} 
+    <div class="my-3">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Artical By - {{post.author}}</strong>
+                <h3 class="mb-2">{{post.title}}</h3>
+                <p class="card-text mb-2"><div class="preview com-inp">{{post.content|safe|truncatechars:500}}</div></p>
+                <div>
+                    <a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

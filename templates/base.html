@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Home{% endblock title %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  {% load static %}
+  <style>
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px 0;
+  }
+  
+
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-logo img {
+    max-width: 100px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 50px;
+}
+
+.footer-links ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.footer-links li{
+    margin-bottom: 10px;
+}
+
+.footer-links a{
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover{
+    color: #ffcc00;
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 20px;
+}  
+  </style>
+  <link rel="stylesheet" href='{% static "/css/style.css" %}' important>
+  {% block style %}{% endblock style %}
+</head>
+
+<body style="background-color: lavender;">
+  <nav class="navbar navbar-expand-lg  navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">iCoder</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% block homeactive %}{% endblock homeactive %}" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block blogactive %}{% endblock blogactive %}" href="/blog">blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block contactactive %}{% endblock contactactive %}" href="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block aboutactive %}{% endblock aboutactive %}" href="/about">About</a>
+          </li>
+        </ul>
+        <form method="get" action="/search" class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" name='query' id="searchs"
+            aria-label="Search">
+          <button class="btn btn-outline-primary " style="margin-right: 45px" type="submit">Search</button>
+        </form>
+
+        {% if user.is_authenticated %}
+        <!-- Button logout trigger -->
+        <ul class="navbar-nav ml-auto" style="margin-right: 45px">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{request.user}} -<img src="{% static '/images/profile.jpg' %}" alt="mdo" width="24" height="24"
+                class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">New Blog</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        {% else %}
+        <!-- Button signup trigger modal -->
+        <button type="button" class="mx-1 btn-sm btn btn-primary" data-bs-toggle="modal"
+          data-bs-target="#modelsignup">Signup</button>
+        <!-- Button Login trigger modal -->
+        <button type="button" class="btn-sm mx-1 btn btn-primary" data-bs-toggle="modal"
+          data-bs-target="#modellogin">Login</button>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  {% for message in messages%}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    <strong>Message ! </strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+
+  {% comment %} signup model {% endcomment %}
+  <div class="modal fade" id="modelsignup" tabindex="-1" aria-labelledby="modelsignup" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          {% comment %} <h1 class="modal-title fs-5">Modal title</h1> {% endcomment %}
+          <h1 class="fw-bold mb-0 fs-2" id='modelsignupTitle'>Sign up for free</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/signup" method='post'>
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" id="fname" name='fname' placeholder="first name"
+                required>
+              <label for="floatingInput">First Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" id="lname" name='lname' placeholder="last name"
+                required>
+              <label for="floatingInput">Last Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" id="username" name='username'
+                placeholder="unique username" required>
+              <label for="floatingInput">UserName (Lowercase and alphaNumeric)</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control rounded-3" id="email" name='email' placeholder="name@example.com"
+                required>
+              <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control rounded-3" id="pass1" name='pass1' placeholder="Password"
+                required>
+              <label for="pass1">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control rounded-3" id="pass2" name='pass2'
+                placeholder="re-enter Password" required>
+              <label for="pass2">confirm Password</label>
+            </div>
+            <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign up</button>
+            <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+            <hr class="my-4">
+            <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2>
+            <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="submit">
+              <svg class="bi me-1" width="16" height="16">
+                <use xlink:href="#twitter"></use>
+              </svg>
+              Sign up with Twitter
+            </button>
+            <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit">
+              <svg class="bi me-1" width="16" height="16">
+                <use xlink:href="#facebook"></use>
+              </svg>
+              Sign up with Facebook
+            </button>
+            <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-3" type="submit">
+              <svg class="bi me-1" width="16" height="16">
+                <use xlink:href="#github"></use>
+              </svg>
+              Sign up with GitHub
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Login model {% endcomment %}
+  <div class="modal fade" id="modellogin" tabindex="-1" aria-labelledby="modellogin" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h1 class="modal-title fs-5" >Modal title</h1> -->
+          <h1 class="fw-bold mb-0 fs-2" id='modelloginTitle'>Login up for free</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action='/login' method='post'>
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-3" id="loginusername" name='loginusername'
+                placeholder="unique username" required>
+              <label for="floatingInput">UserName</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control rounded-3" id="loginpassword" name='loginpassword'
+                placeholder="Password" required>
+              <label for="pass">Enter Password</label>
+            </div>
+        </div>
+        <div class='m-4'>
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Login</button>
+          <small class="text-muted">By clicking Login , you agree to the terms of use.</small>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  {% block body %}{% endblock body %}
+  {% block js %}{% endblock js %}
+
+  <footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{% static '/images/main.jpg' %}" class="rounded-circle" alt="Logo">
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="/"><i>Home</i></a></li>
+                    <li><a href="/about"><i>About</i></a></li>
+                    <li><a href="/contact"><i>Contact</i></a></li>
+                </ul>
+            </div>
+            <div class="footer-links mx-5">
+                <ul>
+                    <li><a href="https://www.facebook.com/saurav.tiwari.3551380/"><i class="bi bi-facebook">Facebook</i></a></li>
+                    <li><a href="https://github.com/tiwarisaurabhdeveloper"><i class="fab fa-github">GitHub</i></a></li>
+                    <li><a href="https://www.instagram.com/id_own_/"><i class="fab fa-instagram">Instagram</i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-text">
+            &copy; 2023 Your Company. All rights reserved.
+        </div>
+    </div>
+</footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

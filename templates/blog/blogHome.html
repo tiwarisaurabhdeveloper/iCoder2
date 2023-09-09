@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}iCoder-Blog{% endblock title %}
+{% block blogactive %}active{% endblock blogactive %}
+{% load static %}
+{% block js %}
+<script>
+let previews=document.getElementsByClassName('preview')
+Array.from(previews).forEach((ele)=>{
+    ele.innerHTML=ele.innerText;
+})
+</script>
+{% endblock js %}
+{% block body %}
+<div class="container">
+    <h2>i-Coder Bloging Post</h2>
+    <div class="row">
+
+        {% for post in allPosts %} 
+        
+    <div class="my-3 col-md-12">
+        <div class="row indexb g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Artical By - {{post.author}}</strong>
+                <h3 class="mb-0 com-inp"><a href="/blog/{{post.slug}}" class="text-dark text-decoration-none" > {{post.title}}</a></h3>
+                <p class="card-text mb-2"><div class="preview com-inp">{{post.content|truncatechars:500}}</div></p>
+                <div>
+                    <a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+</div>
+{% endblock body %}
