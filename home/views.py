@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from blog.models import Post
 # Create your views here.
 def index(request):
-    allPosts=Post.objects.all()[:4]
-    context={'allPosts':allPosts}
+    top_posts = Post.objects.order_by('-views')[:4]
+    context={'top_posts':top_posts}
     return render(request,'home/index.html',context)
 def contact(request):
     if request.method=="POST":

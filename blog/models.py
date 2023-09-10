@@ -6,7 +6,7 @@ class Post(models.Model):
     sno=models.AutoField(primary_key=True)
     title=models.CharField(max_length=200)
     content=models.TextField()
-    views=models.IntegerField(default=0)
+    views=models.PositiveIntegerField(default=0)
     author=models.CharField(max_length=13)
     slug=models.CharField(max_length=150)
     timeStamp=models.DateField(blank=True)

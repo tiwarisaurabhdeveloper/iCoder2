@@ -57,11 +57,11 @@
 </div>
 <div class="container">
   <div class="row mb-2 my-4" style="background-color: lavender;">
-    {% for post in allPosts %}
+    {% for post in top_posts %}
     <div class="col-md-6">
       <div class="row indexc g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-success">{{post.auth}}</strong>
+          <strong class="d-inline-block mb-2 text-success">{{post.author}} ({{post.views}} views)</strong>
           <h3 class="mb-0 com-inp">{{post.title}}</h3>
           <div class="mb-1 text-muted"><span class="badge text-bg-light" style="font-size: xx-small">{{post.timeStamp}}</span></div>
           <p class="mb-auto"><div class="preview com-inp">{{post.content|truncatechars:300}}</div></p>
